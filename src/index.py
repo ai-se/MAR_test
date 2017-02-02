@@ -86,8 +86,9 @@ def train():
     if pos>0 or target.last_pos>0:
         uncertain_id, uncertain_prob, certain_id, certain_prob = target.train()
         res["certain"] = target.format(certain_id,certain_prob)
-        uncertain_id, uncertain_prob, certain_reuse_id, certain_reuse_prob = target.train()
-        res["reuse"] = target.format(certain_reuse_id, certain_reuse_prob)
+        if target.last_pos>0:
+            uncertain_id, uncertain_prob, certain_reuse_id, certain_reuse_prob = target.train_reuse()
+            res["reuse"] = target.format(certain_reuse_id, certain_reuse_prob)
     target.save()
     return jsonify(res)
 
